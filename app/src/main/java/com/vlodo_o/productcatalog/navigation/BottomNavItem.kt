@@ -9,18 +9,24 @@ import com.vlodo_o.productcatalog.R
 
 sealed class BottomNavItem(
     @StringRes val titleResource: Int,
-    val route: String,
+    val graph: String,
     val icon: ImageVector
 ) {
+    abstract fun startDestination(): String
+
     object Home : BottomNavItem(
-        titleResource = R.string.home,
-        route = Screen.ProductList.route,
-        icon = Icons.Default.Home
-    )
+        R.string.home,
+        "home_graph",
+        Icons.Default.Home
+    ) {
+        override fun startDestination() = "product_list"
+    }
 
     object Favorites : BottomNavItem(
-        titleResource = R.string.favorites,
-        route = Screen.Favorites.route,
-        icon = Icons.Default.Favorite
-    )
+        R.string.favorites,
+        "favorites_graph",
+        Icons.Default.Favorite
+    ) {
+        override fun startDestination() = "favorites"
+    }
 }

@@ -8,9 +8,12 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.vlodo_o.productcatalog.navigation.AppNavHost
 import com.vlodo_o.productcatalog.navigation.BottomNavItem
@@ -19,34 +22,44 @@ import com.vlodo_o.productcatalog.navigation.BottomNavItem
 fun MainScreen() {
     val navController = rememberNavController()
 
-    val items = listOf(
+    val tabs = listOf(
         BottomNavItem.Home,
         BottomNavItem.Favorites
     )
 
+    var selectedTab by rememberSaveable { mutableStateOf(BottomNavItem.Home.graph) }
+
     Scaffold(
         bottomBar = {
             NavigationBar {
-                val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
-
-                items.forEach { item ->
+                tabs.forEach { tab ->
+                    val isSelected = selectedTab == tab.graph
                     NavigationBarItem(
-                        selected = currentRoute == item.route,
-                        onClick = { navController.navigate(item.route) },
-                        icon = {
-                            Icon(
-                                imageVector = item.icon,
-                                contentDescription = stringResource(item.titleResource)
-                            )
+                        selected = isSelected,
+                        onClick = {
+                            if (isSelected) {
+                                navController.popBackStack(
+                                    route = tab.startDestination(),
+                                    inclusive = false
+                                )
+                            } else {
+                                selectedTab = tab.graph
+                                navController.navigate(tab.graph) {
+                                    launchSingleTop = true
+                                    restoreState = true
+                                    popUpTo(navController.graph.id) { saveState = true }
+                                }
+                            }
                         },
-                        label = { Text(stringResource(item.titleResource)) }
+                        icon = { Icon(tab.icon, contentDescription = null) },
+                        label = { Text(stringResource(tab.titleResource)) }
                     )
                 }
             }
         }
-    ) {
-        Box(modifier = Modifier.padding(it)) {
-            AppNavHost(navController = navController)
+    ) { padding ->
+        Box(Modifier.padding(padding)) {
+            AppNavHost(navController)
         }
     }
 }
