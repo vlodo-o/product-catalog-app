@@ -18,9 +18,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import com.vlodo_o.productcatalog.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -38,7 +40,7 @@ fun SearchField(
             onQueryChange(newValue.text)
         },
         leadingIcon = {
-            Icon(Icons.Filled.Search, contentDescription = "Search")
+            Icon(Icons.Filled.Search, contentDescription = stringResource(R.string.search))
         },
         trailingIcon = {
             if (textState.text.isNotEmpty()) {
@@ -48,12 +50,12 @@ fun SearchField(
                 }) {
                     Icon(
                         imageVector = Icons.Filled.Close,
-                        contentDescription = "Clear"
+                        contentDescription = stringResource(R.string.clear)
                     )
                 }
             }
         },
-        placeholder = { Text("Search products...") },
+        placeholder = { Text(stringResource(R.string.search_paceholder)) },
         singleLine = true,
         shape = RoundedCornerShape(16.dp),
         modifier = modifier

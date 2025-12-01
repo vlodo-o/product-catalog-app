@@ -38,14 +38,14 @@ class ProductListViewModel @Inject constructor(
 
             when (val productsResult = getProductsUseCase()) {
                 is LoadDataResult.Success -> {
-                    allCategories = listOf("all") + getCategoriesUseCase()
+                    allCategories = listOf(CATEGORY_ALL) + getCategoriesUseCase()
                     currentCategory = null
 
                     filterProducts(isOffline = productsResult.isOffline)
                 }
                 is LoadDataResult.Error -> {
                     _uiState.value = ProductListUiState.Error(
-                        message = "Something went wrong"
+                        message = productsResult.throwable.message.toString()
                     )
                 }
             }
@@ -53,7 +53,7 @@ class ProductListViewModel @Inject constructor(
     }
 
     fun onCategorySelected(categoryName: String?) {
-        currentCategory = if (categoryName == null || categoryName == "all") null
+        currentCategory = if (categoryName == null || categoryName == CATEGORY_ALL) null
         else ProductCategory.fromDisplayName(categoryName)
 
         filterProducts()
@@ -75,14 +75,14 @@ class ProductListViewModel @Inject constructor(
                     _uiState.value = ProductListUiState.Content(
                         products = filtered,
                         categories = allCategories,
-                        selectedCategory = currentCategory?.displayName ?: "all",
+                        selectedCategory = currentCategory?.displayName ?: CATEGORY_ALL,
                         searchQuery = currentSearchQuery,
                         isOffline = categoryResult.isOffline || isOffline
                     )
                 }
                 is LoadDataResult.Error -> {
                     _uiState.value = ProductListUiState.Error(
-                        message = "Something went wrong"
+                        message = categoryResult.throwable.message.toString()
                     )
                 }
             }
@@ -91,5 +91,9 @@ class ProductListViewModel @Inject constructor(
 
     fun retry() {
         loadData()
+    }
+
+    companion object {
+        private const val CATEGORY_ALL = "all"
     }
 }

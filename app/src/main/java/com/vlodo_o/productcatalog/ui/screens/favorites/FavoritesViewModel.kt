@@ -37,7 +37,7 @@ class FavoritesViewModel @Inject constructor(
                     }
                 },
                 onFailure = { error ->
-                    FavoritesUiState.Error(error.message ?: "Unknown error")
+                    FavoritesUiState.Error(error.message ?: "")
                 }
             )
         }

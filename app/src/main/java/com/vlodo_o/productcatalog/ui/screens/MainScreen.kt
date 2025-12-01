@@ -9,6 +9,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.vlodo_o.productcatalog.navigation.AppNavHost
@@ -35,10 +36,10 @@ fun MainScreen() {
                         icon = {
                             Icon(
                                 imageVector = item.icon,
-                                contentDescription = item.title
+                                contentDescription = stringResource(item.titleResource)
                             )
                         },
-                        label = { Text(item.title) }
+                        label = { Text(stringResource(item.titleResource)) }
                     )
                 }
             }

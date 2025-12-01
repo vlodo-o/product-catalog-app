@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Product Catalog App</string>
+    <string name="offline_banner_text">You are currently offline, showing cached data</string>
+    <string name="no_products_found">No products found</string>
+    <string name="retry">Retry</string>
+    <string name="search">Search</string>
+    <string name="clear">Clear</string>
+    <string name="search_paceholder">Search products...</string>
+    <string name="home">Home</string>
+    <string name="favorites">Favorites</string>
 </resources>

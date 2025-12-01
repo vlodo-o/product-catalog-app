@@ -12,7 +12,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.vlodo_o.productcatalog.R
 
 @Composable
 fun ErrorView(
@@ -30,7 +32,7 @@ fun ErrorView(
         Text(text = message, color = MaterialTheme.colorScheme.error)
         Spacer(modifier = Modifier.height(8.dp))
         Button(onClick = onRetry) {
-            Text("Retry")
+            Text(stringResource(R.string.retry))
         }
     }
 }
